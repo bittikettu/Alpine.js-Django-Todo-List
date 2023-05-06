@@ -1,0 +1,93 @@
+   0 apk update
+   1 apk upgrade
+   2 apk add git
+   3 apk add nvim
+   4 apk add neovim
+   5 git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+   6 nvim
+   7 ls
+   8 gcc test.c 
+   9 apk add alpine-dev
+  10 apk add apline sdk
+  11 apk add alpine-sdk
+  12 gcc test.c 
+  13 ls
+  14 ./a.out 
+  15 nvim test.c 
+  16 ls
+  17 gcc test.c 
+  18 ls
+  19 ./a.out 
+  20 nvim test.c 
+  21 apk add tmux
+  22 tmux nvim
+  23 tmux --help
+  24 tmux -c nvim test.c 
+  25 tmux -c nvim
+  26 ls
+  27 exit
+  28 apk update
+  29 apk add django
+  30 apk search django
+  31 pip 
+  32 apk add python3
+  33 apk add python-pip
+  34 apk search python3|grep pip
+  35 apk search python3
+  36 apk search python3-pip
+  37 apk search pip
+  38 apk search pip3
+  39 apk add py3-pip
+  40 pip install django
+  41 cd todo
+  42 ls
+  43 django-admin startproject todo_list .
+  44 ls
+  45 django-admin startapp tasks
+  46 ls
+  47 python makemigrations
+  48 python ./manage.py makemigrations
+  49 python ./manage.py migrate
+  50 python ./manage.py runserver
+  51 http -f POST http://127.0.0.1:8000/tasks/create/ title="Clean the dishes"
+  52 apk add http
+  53 apk add httpie
+  54 http -f POST http://127.0.0.1:8000/tasks/create/ title="Clean the dishes"
+  55 cd..
+  56 cd ..
+  57 ls
+  58 cd /tmp/
+  59 ls
+  60 cd ..
+  61 ls
+  62 find *|grep manage.py
+  63 cd root/todo/
+  64 ls
+  65 python3 ./manage.py makemigrations
+  66 python3 ./manage.py runserver
+  67 python3 ./manage.py migrate
+  68 python3 ./manage.py makemigrations
+  69 python3 ./manage.py migrate
+  70 python3 ./manage.py runserver
+  71 python3 ./manage.py makemigrations
+  72 python3 ./manage.py migrate
+  73 python3 ./manage.py makemigrations
+  74 python3 ./manage.py migrate
+  75 python3 ./manage.py runserver
+  76 python3 ./manage.py makemigrations
+  77 history|grep find
+  78 python3 ./manage.py makemigrations
+  79 python3 ./manage.py migrate
+  80 python3 ./manage.py createsuperuser
+  81 python3 ./manage.py runserver
+  82 python3 ./manage.py makemigrations
+  83 python3 ./manage.py migrate
+  84 python3 ./manage.py runserver
+  85 python3 ./manage.py makemigrations
+  86 python3 ./manage.py migrate
+  87 python3 ./manage.py runserver
+  88 python3 ./manage.py makemigrations
+  89 python3 ./manage.py migrate
+  90 python3 ./manage.py runserver
+  91 history
+  92 history > cmd.txt 

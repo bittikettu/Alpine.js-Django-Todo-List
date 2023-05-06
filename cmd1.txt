@@ -1,0 +1,112 @@
+   0 apk update
+   1 apk upgrade
+   2 apk add git
+   3 apk add nvim
+   4 apk add neovim
+   5 git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+   6 nvim
+   7 ls
+   8 gcc test.c 
+   9 apk add alpine-dev
+  10 apk add apline sdk
+  11 apk add alpine-sdk
+  12 gcc test.c 
+  13 ls
+  14 ./a.out 
+  15 nvim test.c 
+  16 ls
+  17 gcc test.c 
+  18 ls
+  19 ./a.out 
+  20 nvim test.c 
+  21 apk add tmux
+  22 tmux nvim
+  23 tmux --help
+  24 tmux -c nvim test.c 
+  25 tmux -c nvim
+  26 ls
+  27 exit
+  28 apk update
+  29 apk add django
+  30 apk search django
+  31 pip 
+  32 apk add python3
+  33 apk add python-pip
+  34 apk search python3|grep pip
+  35 apk search python3
+  36 apk search python3-pip
+  37 apk search pip
+  38 apk search pip3
+  39 apk add py3-pip
+  40 pip install django
+  41 cd todo
+  42 ls
+  43 django-admin startproject todo_list .
+  44 ls
+  45 django-admin startapp tasks
+  46 ls
+  47 python makemigrations
+  48 python ./manage.py makemigrations
+  49 python ./manage.py migrate
+  50 python ./manage.py runserver
+  51 python ./manage.py createsuperuser
+  52 python ./manage.py runserver
+  53 apk add tzdata
+  54 cp /usr/share/zoneinfo/Europe/Brussels /etc/localtime
+  55 echo "Europe/Brussels" >  /etc/timezone
+  56 date
+  57 python ./manage.py runserver
+  58 python ./manage.py makemigrations
+  59 python ./manage.py migrate
+  60 python ./manage.py makemigrations
+  61 python ./manage.py migrate
+  62 python ./manage.py makemigrations
+  63 python ./manage.py migrate
+  64 ls
+  65 rm db.sqlite3 
+  66 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+  67 find . -path "*/migrations/*.pyc"  -delete
+  68 python ./manage.py makemigrations
+  69 python ./manage.py migrate
+  70 python ./manage.py createsuperuser
+  71 python ./manage.py runserver
+  72 python ./manage.py makemigrations
+  73 pip install psycopg2
+  74 pip install pg_config
+  75 apk add pg_config
+  76 apk update
+  77 apk add postgres
+  78 pip install pg_config
+  79 RUN apk add postgresql-dev gcc python3-dev musl-dev
+  80 apk add postgresql-dev gcc python3-dev musl-dev
+  81 apk add pg_config
+  82 pip install psycopg2
+  83 python ./manage.py makemigrations
+  84 python ./manage.py migrate
+  85 python ./manage.py runserver
+  86 python ./manage.py makemigrations
+  87 python ./manage.py migrate
+  88 python ./manage.py runserver
+  89 python ./manage.py createsuperuser
+  90 python ./manage.py runserver
+  91 ls
+  92 apk search memcached
+  93 apk add memcached
+  94 apk add pymemcache
+  95 pip install pymemcache
+  96 memcached 
+  97 memcached -u
+  98 memcached -?
+  99 memcached --help
+ 100 memcached -u derp
+ 101 memcached -u root
+ 102 memcached -vvv -u root
+ 103 history|grep find
+ 104 !66
+ 105 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+ 106 find . -path "*/migrations/*.pyc"  -delete
+ 107 history|grep find
+ 108 memcached -vvv -u root
+ 109 history
+ 110 cat history > cmd1.txt
+ 111 history > cmd1.txt
