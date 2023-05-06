@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Simple ToDo List</title>
 
-    <link href="//unpkg.com/tailwindcss@2.0.1/dist/tailwind.min.css" rel="stylesheet">
-    <script src="//unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <link href="https://unpkg.com/tailwindcss@2.0.1/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/axios@1.4.0/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
     <script>
 
         function getCookie(name) {
@@ -34,39 +34,53 @@
 
 </head>
 
-<body x-data="todos()">
+<body x-data="todos()" class="bg-gray-100 py-6 sm:py-12">
+    <div>
+ 
+      
+      
 
-    <div class="max-w-4xl mx-auto mt-6">
+    <div class="max-w-2xl mx-auto mt-4">
 
         <div class="text-5xl font-extrabold leading-none tracking-tight text-center">
-            <h1 class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-pink-600 to-purple-900">On sitte viimesen päälle lista</h1>
+            <h1 class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-pink-600 to-purple-900">Homework 9000</h1>
         </div>
 
         <!-- Task Input -->
         <div id="task-input" class="mt-4 flex justify-center">
-            <div class="m-4 flex">
-                <input x-model="taskTitle"
+            <div class="m-4 flex">                
+                <input x-model="taskTitle" 
                     class="rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200"
-                    placeholder="Task Title" />
-                <button @click="
-                        if (taskTitle) { 
-                            addTask(); 
-                            $dispatch('listupdate');
-                        } 
-                        else { 
-                            alert('task title cannot be empty')
-                        }" class="px-8 rounded-r-lg bg-purple-800 text-gray-100 font-bold p-4 uppercase">Lisää taskiloinen</button>
+                    placeholder="Tehtävä" 
+                    @keydown.enter="addTaskHelper();"/>
+                <input x-model="taskPrice"
+                type="number" required
+                    value="2"
+                    class="w-20 p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200"
+                    placeholder="2"
+                    @keydown.enter="addTaskHelper();"/>
+                <button @click="addTaskHelper();" class="px-8 rounded-r-lg bg-purple-800 text-gray-100 font-bold p-4 uppercase">Lisää tehtävä</button>
             </div>
         </div>
 
     </div>
+    
     <!-- Task List -->
-    <div x-init="loadTasks()" @listupdate.window="refreshTasks()" id="task-list"
-        class="max-w-md mx-auto grid grid-cols-1 gap-2 mt-6">
+    <!-- <div x-init="loadTasks()" @listupdate.window="refreshTasks()" id="task-list"-->
+        <div x-init="tasks = await(await fetch('tasks/')).json()" @listupdate.window="refreshTasks()" id="task-list"
+        class="w-2/6 mx-auto grid grid-cols-1 gap-1 mt-6">
         <template x-for="task in tasks" :key="task.id">
             <div x-show="!task.completed" class="p-4 bg-white hover:bg-gray-100 cursor-pointer flex justify-between items-center border rounded-md">
+                
                 <p :class="{ 'line-through': task.completed }" x-text="task.title"></p>
+                <p :class="{ 'line-through': task.completed }" x-text="task.added"></p>
                 <div class="flex">
+                    <div class="ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 ">
+                        <span x-show="task.price <= 5" x-text="task.price" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">Yellow</span>
+                        <span x-show="task.price > 5 && task.price <= 10" x-text="task.price" class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Yellow</span>
+                        <span x-show="task.price > 10 && task.price <= 20" x-text="task.price" class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">Yellow</span>
+                        <span x-show="task.price > 20" x-text="task.price" class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Yellow</span>
+                    </div>
                     <button @click="updateTask(task)" class="mr-4" type="button">
                         <svg x-show="!task.completed" class="h-6 w-6 text-gray-500 hover:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -80,6 +94,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
+
                 </div>
             </div>
         </template>
@@ -104,84 +119,95 @@
             </div>
         </template>
     </div>
+</div>
 
     <script>
-        function todos() {
-            return {
-                tasks: [],
-                loadTasks() {
-                    let self = this;
-                    axios.get('http://127.0.0.1:8000/tasks/')
-                        .then(function (response) {
-                            // handle success
-                            self.tasks = response.data;
-                            // console.log(self.tasks);
-                            console.log(response.data);
-                        })
-                        .catch(function (error) {
-                            // handle error
-                            console.log(error);
-                        });
-                },
-                refreshTasks() {
-                    let self = this;
-                    console.log(self.tasks);
-                },
-                taskTitle: '',
-                csrftoken: getCookie('csrftoken'),
-                addTask() {
-                    let self = this;
-                    let params = new URLSearchParams();
-                    let crfstoken = getCookie('csrftoken');
-                    params.append('title', this.taskTitle);
-                    axios.post('http://127.0.0.1:8000/tasks/create/', params,
-                        {
-                            headers: { 'X-CSRFToken': crfstoken },
+            function todos() {
+                return {
+                    tasks: [],
+                    addTaskHelper() {
+                        if (this.taskTitle) {
+                            this.addTask();
                         }
-                    )
-                        .then(function (response) {
-                            self.tasks.push(response.data);
-                            self.taskTitle = '';
-                        }).catch(function (error) {
-                            // handle error
-                            console.log(error);
-                        });
-                },
-                deleteTask(taskId) {
-                    let crfstoken = getCookie('csrftoken');
-                    let self = this;
-                    axios.post('http://127.0.0.1:8000/tasks/' + taskId + '/delete/', {},
-                        { headers: { 'X-CSRFToken': crfstoken } })
-                        .then(function (response) {
-                            let removeIndex = self.tasks.map(item => item.id).indexOf(taskId);
-                            ~removeIndex && self.tasks.splice(removeIndex, 1);
-                        }).catch(function (error) {
-                            // handle error
-                            console.log(error);
-                        });
-                },
-                updateTask(task) {
-                    let crfstoken = getCookie('csrftoken');
-                    let self = this;
-                    let params = new URLSearchParams();
-                    if (task.completed) {
-                        params.append('status', 0);
-                    } else {
-                        params.append('status', 1);
+                        else {
+                            alert('task title cannot be empty')
+                        }
+                    },
+                    loadTasks() {
+                        let self = this;
+                        axios.get('http://127.0.0.1:8000/tasks/')
+                            .then(function (response) {
+                                // handle success
+                                self.tasks = response.data;
+                                // console.log(self.tasks);
+                                console.log(response.data);
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
+                    },
+                    refreshTasks() {
+                        let self = this;
+                        console.log(self.tasks);
+                    },
+                    taskTitle: '',
+                    taskPrice: '',
+                    csrftoken: getCookie('csrftoken'),
+                    addTask() {
+                        let self = this;
+                        let params = new URLSearchParams();
+                        let crfstoken = getCookie('csrftoken');
+                        params.append('title', this.taskTitle);
+                        params.append('price', this.taskPrice);
+                        axios.post('http://127.0.0.1:8000/tasks/create/', params,
+                            {
+                                headers: { 'X-CSRFToken': crfstoken,'Access-Control-Allow-Origin' : '*' },
+                            }
+                        )
+                            .then(function (response) {
+                                self.tasks.push(response.data);
+                                self.taskTitle = '';
+                            }).catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
+                    },
+                    deleteTask(taskId) {
+                        let crfstoken = getCookie('csrftoken');
+                        let self = this;
+                        axios.post('http://127.0.0.1:8000/tasks/' + taskId + '/delete/', {},
+                            { headers: { 'X-CSRFToken': crfstoken } })
+                            .then(function (response) {
+                                let removeIndex = self.tasks.map(item => item.id).indexOf(taskId);
+                                ~removeIndex && self.tasks.splice(removeIndex, 1);
+                            }).catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
+                    },
+                    updateTask(task) {
+                        let crfstoken = getCookie('csrftoken');
+                        let self = this;
+                        let params = new URLSearchParams();
+                        if (task.completed) {
+                            params.append('status', 0);
+                        } else {
+                            params.append('status', 1);
+                        }
+                        console.log('http://127.0.0.1:8000/tasks/' + task.id + '/update/');
+                        axios.post('http://127.0.0.1:8000/tasks/' + task.id + '/update/', params,
+                            { headers: { 'X-CSRFToken': crfstoken } })
+                            .then(function (response) {
+
+                                task.completed = !task.completed;
+                            }).catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            });
                     }
-                    console.log('http://127.0.0.1:8000/tasks/' + task.id + '/update/');
-                    axios.post('http://127.0.0.1:8000/tasks/' + task.id + '/update/', params,
-                        { headers: { 'X-CSRFToken': crfstoken } })
-                        .then(function (response) {
-                            
-                            task.completed = !task.completed;
-                        }).catch(function (error) {
-                            // handle error
-                            console.log(error);
-                        });
                 }
             }
-        }
     </script>
 
 </body>
