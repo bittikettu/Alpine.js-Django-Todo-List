@@ -50,6 +50,12 @@
         <div class="text-5xl font-extrabold leading-none tracking-tight text-center">
             <h1 class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-pink-600 to-purple-900">Homework 9000</h1>
         </div>
+        
+        <div x-init="balance = await(await fetch('user/balance')).json();console.log(balance);" class="leading-none tracking-tight text-center">
+            <template x-for="bal in balance">
+                <h1 x-text="bal.d" class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-pink-600 to-purple-900">Homework 9000</h1>
+            </template>
+        </div>
 
         <!-- Task Input -->
         <div id="task-input" class="mt-4 flex justify-center">
@@ -130,6 +136,7 @@
             function todos() {
                 return {
                     tasks: [],
+                    balance: [],
                     addTaskHelper() {
                         if (this.taskTitle) {
                             this.addTask();

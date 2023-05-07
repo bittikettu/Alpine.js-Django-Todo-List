@@ -17,7 +17,7 @@ def user_balance(request):
     unpaid = Task.objects.filter(tasksdone__person=userq, tasksdone__paid=False, tasksdone__done=True).aggregate(Sum('price'))
     paid = Task.objects.filter(tasksdone__person=userq, tasksdone__paid=True, tasksdone__done=True).aggregate(Sum('price'))
     
-    balance = [{"paid":paid['price__sum']},{"unpaid":unpaid['price__sum']},{"user":userq.username}]
+    balance = [{"d":paid['price__sum']},{"d":unpaid['price__sum']},{"d":userq.username}]
     
     print(balance)
     return JsonResponse(status=HTTPStatus.OK, data=balance, safe=False)
