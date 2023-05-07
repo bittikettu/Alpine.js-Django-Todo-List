@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-6=-v80a^-+)fle5i$ek0z2riu(7g52w*pt!qe(1sljm=x-*b6b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -88,11 +88,11 @@ DATABASES = {
         'NAME': 'derp',
         'USER': 'postgres',
         'PASSWORD': 'example',
-        'HOST': '192.168.1.212',
+        'HOST': '192.168.1.38',
         'PORT': '5432'
     }
 }
-
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000','http://localhost:8000']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -135,4 +135,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "tasks.UserK"
+AUTH_USER_MODEL = "tasks.Person"

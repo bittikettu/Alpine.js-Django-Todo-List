@@ -8,6 +8,10 @@ from tasks.models import Task
 from http import HTTPStatus
 from django.core.cache import cache
 import logging
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import requires_csrf_token
+
+
 
 def task_list(request):
     
@@ -26,6 +30,7 @@ def task_list(request):
     #    tasks = kakke
     return JsonResponse(status=HTTPStatus.OK, data=tasks, safe=False)
 
+@csrf_exempt
 def create_task(request):
     title = request.POST.get('title')
     price = request.POST.get('price')
@@ -39,6 +44,7 @@ def create_task(request):
                                           'added': task.added,
                                           'id': task.id}, safe=False)
 
+@csrf_exempt
 def delete_task(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     #task.delete()
@@ -46,9 +52,12 @@ def delete_task(request, task_id):
     task.save()
     return JsonResponse(status=HTTPStatus.NO_CONTENT, data={'message': 'task deleted'})
 
+@csrf_exempt
 def update_task_status(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     status = request.POST.get('status')
+    user = request.POST.get('user')
+    print(user)
     if not status:
         return JsonResponse(status=HTTPStatus.BAD_REQUEST, data={'error': 'status is required'})
     task.completed = int(status)

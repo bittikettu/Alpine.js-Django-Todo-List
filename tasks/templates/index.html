@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/axios@1.4.0/dist/axios.min.js"></script>
     <script src="https://unpkg.com/alpinejs" defer></script>
     <script>
-
+        
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -25,6 +25,11 @@
                     }
                 }
             }
+            else {
+                console.log("MITA VITTUA");
+            }
+            console.log(cookieValue);
+
             return cookieValue;
         }
         const csrftoken = getCookie('csrftoken');
@@ -135,7 +140,7 @@
                     },
                     loadTasks() {
                         let self = this;
-                        axios.get('http://127.0.0.1:8000/tasks/')
+                        axios.get('http://localhost:8000/tasks/')
                             .then(function (response) {
                                 // handle success
                                 self.tasks = response.data;
@@ -157,12 +162,14 @@
                     addTask() {
                         let self = this;
                         let params = new URLSearchParams();
-                        let crfstoken = getCookie('csrftoken');
+                        let csrftoken = getCookie('csrftoken');
+                        console.log("csrftoken");
+                        console.log(csrftoken);
                         params.append('title', this.taskTitle);
                         params.append('price', this.taskPrice);
-                        axios.post('http://127.0.0.1:8000/tasks/create/', params,
+                        axios.post('http://localhost:8000/tasks/create/', params,
                             {
-                                headers: { 'X-CSRFToken': crfstoken,'Access-Control-Allow-Origin' : '*' },
+                                headers: { 'X-CSRFToken': csrftoken },
                             }
                         )
                             .then(function (response) {
@@ -174,10 +181,10 @@
                             });
                     },
                     deleteTask(taskId) {
-                        let crfstoken = getCookie('csrftoken');
+                        let csrftoken = getCookie('csrftoken');
                         let self = this;
-                        axios.post('http://127.0.0.1:8000/tasks/' + taskId + '/delete/', {},
-                            { headers: { 'X-CSRFToken': crfstoken } })
+                        axios.post('http://localhost:8000/tasks/' + taskId + '/delete/', {},
+                            { headers: { 'X-CSRFToken': csrftoken } })
                             .then(function (response) {
                                 let removeIndex = self.tasks.map(item => item.id).indexOf(taskId);
                                 ~removeIndex && self.tasks.splice(removeIndex, 1);
@@ -187,17 +194,17 @@
                             });
                     },
                     updateTask(task) {
-                        let crfstoken = getCookie('csrftoken');
+                        let csrftoken = getCookie('csrftoken');
                         let self = this;
                         let params = new URLSearchParams();
+                        params.append('user', 'admin');
                         if (task.completed) {
                             params.append('status', 0);
                         } else {
                             params.append('status', 1);
                         }
-                        console.log('http://127.0.0.1:8000/tasks/' + task.id + '/update/');
-                        axios.post('http://127.0.0.1:8000/tasks/' + task.id + '/update/', params,
-                            { headers: { 'X-CSRFToken': crfstoken } })
+                        axios.post('http://localhost:8000/tasks/' + task.id + '/update/', params,
+                            { headers: { 'X-CSRFToken': csrftoken } })
                             .then(function (response) {
 
                                 task.completed = !task.completed;
