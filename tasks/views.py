@@ -19,6 +19,7 @@ def user_balance(request):
     
     balance = [{"d":paid['price__sum']},{"d":unpaid['price__sum']},{"d":userq.username}]
     
+    print('fetch balance')
     print(balance)
     return JsonResponse(status=HTTPStatus.OK, data=balance, safe=False)
 

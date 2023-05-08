@@ -11,28 +11,22 @@
     <script src="https://unpkg.com/axios@1.4.0/dist/axios.min.js"></script>
     <script src="https://unpkg.com/alpinejs" defer></script>
     <script>
-        
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
             }
-            else {
-                console.log("MITA VITTUA");
-            }
-            console.log(cookieValue);
-
-            return cookieValue;
         }
-        const csrftoken = getCookie('csrftoken');
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
     </script>
     </body>
 
@@ -41,17 +35,13 @@
 
 <body x-data="todos()" class="bg-gray-100 py-6 sm:py-12">
     <div>
- 
-      
-      
-
     <div class="max-w-2xl mx-auto mt-4">
 
         <div class="text-5xl font-extrabold leading-none tracking-tight text-center">
             <h1 class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-pink-600 to-purple-900">Homework 9000</h1>
         </div>
         
-        <div x-init="balance = await(await fetch('user/balance')).json();console.log(balance);" class="leading-none tracking-tight text-center">
+        <div x-init="balance = await(await fetch('user/balance')).json();console.log(balance);" @listupdate.window="balance = await(await fetch('user/balance')).json();" class="leading-none tracking-tight text-center">
             <template x-for="bal in balance">
                 <h1 x-text="bal.d" class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-pink-600 to-purple-900">Homework 9000</h1>
             </template>
@@ -78,13 +68,12 @@
     
     <!-- Task List -->
     <!-- <div x-init="loadTasks()" @listupdate.window="refreshTasks()" id="task-list"-->
-        <div x-init="tasks = await(await fetch('tasks/')).json()" @listupdate.window="refreshTasks()" id="task-list"
+        <div x-init="tasks = await(await fetch('tasks/')).json();" id="task-list"
         class="w-2/6 mx-auto grid grid-cols-1 gap-1 mt-6">
         <template x-for="task in tasks" :key="task.id">
             <div x-show="!task.completed" class="p-4 bg-white hover:bg-gray-100 cursor-pointer flex justify-between items-center border rounded-md">
                 
                 <p :class="{ 'line-through': task.completed }" x-text="task.title"></p>
-                <p :class="{ 'line-through': task.completed }" x-text="task.added"></p>
                 <div class="flex">
                     <div class="ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 ">
                         <span x-show="task.price <= 5" x-text="task.price" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">Yellow</span>
@@ -92,7 +81,7 @@
                         <span x-show="task.price > 10 && task.price <= 20" x-text="task.price" class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">Yellow</span>
                         <span x-show="task.price > 20" x-text="task.price" class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Yellow</span>
                     </div>
-                    <button @click="updateTask(task)" class="mr-4" type="button">
+                    <button @click="updateTask(task);$dispatch('listupdate');" class="mr-4" type="button">
                         <svg x-show="!task.completed" class="h-6 w-6 text-gray-500 hover:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -113,7 +102,7 @@
             <div x-show="task.completed" class="p-4 bg-white hover:bg-gray-100 cursor-pointer flex justify-between items-center border rounded-md">
                 <p :class="{ 'line-through': task.completed }" x-text="task.title"></p>
                 <div class="flex">
-                    <button @click="updateTask(task)" class="mr-4" type="button">
+                    <button @click="updateTask(task);$dispatch('listupdate');" class="mr-4" type="button">
                         <svg x-show="!task.completed" class="h-6 w-6 text-gray-500 hover:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -145,6 +134,10 @@
                             alert('task title cannot be empty')
                         }
                     },
+                    async test() {
+                        self.balance = await(await fetch('user/balance')).json();
+                        return self.balance;
+                    },
                     loadTasks() {
                         let self = this;
                         axios.get('http://localhost:8000/tasks/')
@@ -158,8 +151,10 @@
                                 console.log(error);
                             });
                     },
+ 
                     refreshTasks() {
                         let self = this;
+                        this.test();
                         console.log(self.tasks);
                     },
                     taskTitle: '',
@@ -218,6 +213,7 @@
                                 // handle error
                                 console.log(error);
                             });
+                        this.test();
                     }
                 }
             }
