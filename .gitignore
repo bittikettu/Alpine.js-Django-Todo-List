@@ -2,3 +2,4 @@ tasks/__pycache__/*
 todo_list/__pycache__/*
 .vscode/*
 tasks/migrations/__pycache__/
+todo_list/__pycache__/
